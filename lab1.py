@@ -1,3 +1,5 @@
+# Elijah Paulman - QuickSort Implementation
+
 import random
 import time
 import unittest
