@@ -3,6 +3,8 @@
 import random
 import time
 import unittest
+import matplotlib.pyplot as plt
+import math
 
 # quicksort algorithm implementation
 def quicksort(arr):
@@ -20,12 +22,37 @@ def quicksort(arr):
 def createRandomArray(size):
     return [random.randint(0, 1000) for _ in range(size)]
 
-# computes time to execute
+# computes time to execute and returns both the array size and the runtime
 def computeRunTime(func, arr):
     start_time = time.time()
     func(arr)
     end_time = time.time()
-    return end_time - start_time
+    return len(arr), end_time - start_time
+
+# computes the expected runtime for quicksort, which is n log n
+def expectedRunTime(n):
+    return n * math.log(n)
+
+# array sizes to test
+sizes = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000]
+
+# lists to store the array sizes and runtimes
+actual_runtimes = []
+expected_runtimes = []
+
+for size in sizes:
+    arr = createRandomArray(size)
+    arr_size, runtime = computeRunTime(quicksort, arr)
+    actual_runtimes.append((arr_size, runtime))
+    expected_runtimes.append((arr_size, expectedRunTime(arr_size)))
+
+# plot the actual runtimes and expected runtimes
+plt.plot(*zip(*actual_runtimes), label='Actual')
+plt.plot(*zip(*expected_runtimes), label='Expected')
+plt.xlabel('Array Size')
+plt.ylabel('Runtime (seconds)')
+plt.legend()
+plt.show()
 
 # unit test to make sure array is sorted
 class TestQuickSort(unittest.TestCase):
